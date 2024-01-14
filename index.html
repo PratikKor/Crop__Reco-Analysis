@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kissan Site</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="./style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="header-1">
+        <a href="#" class="logo"
+          ><i class="fas fa-shopping-basket"></i>Kissan</a
+        >
+        <from action="" class="search-box-container">
+          <input
+            type="search"
+            id="search-box"
+            placeholder="   Search here . . . "
+          />
+          <label for="search-box" class="fas fa-search"></label>
+        </from>
+      </div>
+
+      <div class="header-2">
+        <div id="menu-bar" class="fas fa-bars"></div>
+
+        <nav class="navbar">
+          <a href="#home">Summary</a>
+          <a href="#product">Field View</a>
+          <a href="#category">Sensors</a>
+          <a href="#deal">Harvest Season</a>
+        </nav>
+
+        <div class="icons">
+          <a href="#" class="fas fa-user-circle"></a>
+        </div>
+      </div>
+    </header>
+
+    <!-- pie chart Section -->
+    <section class="home" id="home">
+      <canvas class="pie-chart" id="moistureChart"></canvas>
+
+      <div class="content">
+        <span>Your fields current data</span>
+        <h3>average of the sensors</h3>
+        <a href="#category" class="btn">view detailed summary</a>
+        <a href="#" class="btn" id="startIrrigation">Start Manual Irrigation</a>
+      </div>
+    </section>
+
+    <!-- pie chart script -->
+    <script>
+      // Add your Chart.js configuration and data for the moisture chart here
+      var ctx = document.getElementById("moistureChart").getContext("2d");
+      var moistureChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Average Moisture Content", "Remaining"],
+          datasets: [
+            {
+              data: [70, 30], // Example values, replace with actual data
+              backgroundColor: ["#36A2EB", "#FFCE56"], // Example colors, you can customize
+            },
+          ],
+        },
+      });
+
+      // Function to update the pie chart data with average values from bar charts
+      function updatePieChart(chart, value1, value2) {
+        // Calculate the average of the two values
+        var averageValue = (value1 + value2) / 2;
+
+        // Update the pie chart data
+        chart.data.datasets[0].data = [averageValue, 100 - averageValue];
+        chart.update();
+      }
+
+      // Update the pie chart values every 5 seconds
+      setInterval(function () {
+        var fieldSection1Value = getRandomMoistureLevel();
+        var fieldSection2Value = getRandomMoistureLevel();
+
+        updatePieChart(moistureChart, fieldSection1Value, fieldSection2Value);
+      }, 5000);
+
+      document
+        .getElementById("startIrrigation")
+        .addEventListener("click", function () {
+          alert("Irrigation has been started");
+        });
+
+      // Function to check moisture level and display alert
+      function checkMoistureLevel() {
+        var moistureLevel = moistureChart.data.datasets[0].data[0];
+        if (moistureLevel < 65) {
+          alert("Moisture level has fallen below 65%");
+        }
+      }
+
+      // Update the pie chart values and check moisture level every 5 seconds
+      setInterval(function () {
+        var fieldSection1Value = getRandomMoistureLevel();
+        var fieldSection2Value = getRandomMoistureLevel();
+
+        updatePieChart(moistureChart, fieldSection1Value, fieldSection2Value);
+        checkMoistureLevel();
+      }, 5000);
+
+      // Function to start manual irrigation
+      document
+        .getElementById("startIrrigation")
+        .addEventListener("click", function () {
+          alert("Irrigation has been started");
+        });
+
+      // Function to check moisture level and display alert
+      function checkMoistureLevel() {
+        var moistureLevel = moistureChart.data.datasets[0].data[0];
+        if (moistureLevel < 65) {
+          alert("Moisture level has fallen below 65%");
+        }
+      }
+
+      // Update the pie chart values and check moisture level every 5 seconds
+      setInterval(function () {
+        var fieldSection1Value = getRandomMoistureLevel();
+        var fieldSection2Value = getRandomMoistureLevel();
+
+        updatePieChart(moistureChart, fieldSection1Value, fieldSection2Value);
+        checkMoistureLevel();
+      }, 5000);
+    </script>
+
+    <!-- Banner Section  -->
+    <h1 class="heading">All sensors<span> Summary </span></h1>
+    <section class="banner-container">
+      <div class="banner">
+        <img src="./banner-1.png" alt="" />
+        <div class="content">
+          <h3>Temperature</h3>
+          <p>upto 45%</p>
+        </div>
+      </div>
+
+      <div class="banner">
+        <img src="./banner-2.png" alt="" />
+        <div class="content">
+          <h3>Humidity</h3>
+          <p>upto 50%</p>
+        </div>
+      </div>
+
+      <div class="banner">
+        <img src="./banner-3.png" alt="" />
+        <div class="content">
+          <h3>Wind Speed</h3>
+          <p>upto 45%</p>
+        </div>
+      </div>
+
+      <div class="banner">
+        <img src="./banner-4.png" alt="" />
+        <div class="content">
+          <h3>Rainfall Chances</h3>
+          <p>upto 50%</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- video Section -->
+    <section class="product" id="product">
+      <h1 class="heading">Your Fields <span> live view</span></h1>
+
+      <div class="box-container">
+        <div class="box">
+          <canvas id="fieldView1Canvas" width="300" height="200"></canvas>
+          <h3>Field view 1</h3>
+          <a href="#category" class="btn">view data</a>
+        </div>
+      </div>
+
+      <div class="box-container">
+        <div class="box">
+          <canvas id="fieldView2Canvas" width="300" height="200"></canvas>
+          <h3>Field view 2</h3>
+          <a href="#category" class="btn">view data</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- webcam script -->
+    <script>
+      function startWebcam(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const context = canvas.getContext("2d");
+
+        // Get user media (webcam) and display in the canvas
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((stream) => {
+            const video = document.createElement("video");
+            video.srcObject = stream;
+            video.play();
+
+            // Draw video frames onto the canvas
+            function drawFrame() {
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);
+              requestAnimationFrame(drawFrame);
+            }
+
+            drawFrame();
+          })
+          .catch((error) => {
+            console.error("Error accessing webcam:", error);
+          });
+      }
+
+      // Start webcam for each canvas
+      startWebcam("fieldView1Canvas");
+      startWebcam("fieldView2Canvas");
+    </script>
+
+    <!-- sensors Section -->
+    <section class="category" id="category">
+      <h1 class="heading">your <span>sensors</span></h1>
+
+      <div class="box-container">
+        <div class="box">
+          <h3>Field 1</h3>
+          <canvas class="bar-chart" id="fieldSection1Chart"></canvas>
+        </div>
+
+        <div class="box">
+          <h3>Field 2</h3>
+          <canvas class="bar-chart" id="fieldSection2Chart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- sensors script -->
+    <script>
+      // Function to generate random moisture levels above 50%
+      function getRandomMoistureLevel() {
+        return Math.floor(Math.random() * 50) + 51; // Random number between 51 and 100
+      }
+
+      // Function to update the bar chart data
+      function updateBarChart(chart, value1, value2) {
+        chart.data.labels = ["Moisture Level", "Remaining"];
+        chart.data.datasets[0].data = [value1, 100 - value1];
+        chart.data.datasets[1].data = [value2, 100 - value2];
+        chart.update();
+      }
+
+      // Create bar charts for each field section
+      var fieldSection1Ctx = document
+        .getElementById("fieldSection1Chart")
+        .getContext("2d");
+      var fieldSection1Chart = new Chart(fieldSection1Ctx, {
+        type: "bar",
+        data: {
+          labels: ["Moisture Level", "Remaining"],
+          datasets: [
+            {
+              label: "Field 1",
+              data: [70, 30], // Initial values, can be updated
+              backgroundColor: ["#36A2EB", "#FFCE56"],
+            },
+            {
+              label: "Remaining",
+              data: [0, 100], // Initial values, can be updated
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+            },
+          ],
+        },
+        options: {
+          scales: {
+            x: {
+              display: false,
+            },
+            y: {
+              min: 0,
+              max: 100,
+            },
+          },
+        },
+      });
+
+      var fieldSection2Ctx = document
+        .getElementById("fieldSection2Chart")
+        .getContext("2d");
+      var fieldSection2Chart = new Chart(fieldSection2Ctx, {
+        type: "bar",
+        data: {
+          labels: ["Moisture Level", "Remaining"],
+          datasets: [
+            {
+              label: "Field 2",
+              data: [60, 40], // Initial values, can be updated
+              backgroundColor: ["#36A2EB", "#FFCE56"],
+            },
+            {
+              label: "Remaining",
+              data: [0, 100], // Initial values, can be updated
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+            },
+          ],
+        },
+        options: {
+          scales: {
+            x: {
+              display: false,
+            },
+            y: {
+              min: 0,
+              max: 100,
+            },
+          },
+        },
+      });
+
+      // Update the bar chart values every 5 seconds
+      setInterval(function () {
+        var fieldSection1Value = getRandomMoistureLevel();
+        var fieldSection2Value = getRandomMoistureLevel();
+
+        updateBarChart(
+          fieldSection1Chart,
+          fieldSection1Value,
+          100 - fieldSection1Value
+        );
+        updateBarChart(
+          fieldSection2Chart,
+          fieldSection2Value,
+          100 - fieldSection2Value
+        );
+      }, 5000);
+    </script>
+
+    <!-- deadline Section -->
+    <section class="deal" id="deal">
+      <div class="content">
+        <h3 class="title">Days untill Harvest</h3>
+        <p>
+          get your crops and inventory ready for the hearvest season and be
+          prepared for the rush!
+        </p>
+        <div class="count-down">
+          <div class="box">
+            <h3 id="day">00</h3>
+            <span>day</span>
+          </div>
+
+          <div class="box">
+            <h3 id="hour">00</h3>
+            <span>hour</span>
+          </div>
+
+          <div class="box">
+            <h3 id="minute">00</h3>
+            <span>minute</span>
+          </div>
+
+          <div class="box">
+            <h3 id="second">00</h3>
+            <span>second</span>
+          </div>
+        </div>
+
+        <!-- <a href="" class="btn">check the deal</a> -->
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+      <h3>subscribe us for latest Farming related updates</h3>
+
+      <form action="">
+        <input class="box" type="email" placeholder="enter your email" />
+        <input type="submit" value="subscribe" class="btn" />
+      </form>
+    </section>
+
+    <!-- Footer Section -->
+    <section class="footer">
+      <div class="box-container">
+        <div class="box">
+          <a href="#" class="logo"
+            ><i class="fas fa-shopping-basket"></i>Kissan</a
+          >
+          <p>
+            Thanks for using Kissan! Grow with us—monitor your soil, sell your
+            harvest online. Happy farming!
+          </p>
+          <div class="share">
+            <a href="#" class="btn fab fa-facebook-f"></a>
+            <a href="#" class="btn fab fa-instagram"></a>
+            <a href="#" class="btn fab fa-linkedin"></a>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Help centers near you</h3>
+          <div class="links">
+            <a href="#">Mumbai</a>
+            <a href="#">Pune</a>
+            <a href="#">Nagpur</a>
+            <a href="#">Chh. SambhajiNagar</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>quick links</h3>
+          <div class="links">
+            <a href="#home">Summary</a>
+            <a href="#product">Field View</a>
+            <a href="#category">Sensors</a>
+            <a href="#deal">Harvest Season</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Download App</h3>
+          <div class="links">
+            <a href="#">google play</a>
+            <a href="#">Windows xp</a>
+            <a href="#">app store</a>
+          </div>
+        </div>
+      </div>
+      <h1 class="credit">created by <span> Pratik Kor </span></h1>
+    </section>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+
+<!-- Contact Section
+    <section class="contact" id="contact">
+      <h1 class="heading"><span>Contact</span> us</h1>
+      <form action="">
+        <div class="inputBox">
+          <input type="text" placeholder="Name" />
+          <input type="email" placeholder="E-mail" />
+        </div>
+
+        <div class="inputBox">
+          <input type="number" placeholder="Number" />
+          <input type="text" placeholder="Subject" />
+        </div>
+
+        <textarea
+          placeholder="Message"
+          name=""
+          id=""
+          cols="30"
+          rows="10"
+        ></textarea>
+        <input type="submit" value="send message" class="btn" />
+      </form>
+    </section> -->
